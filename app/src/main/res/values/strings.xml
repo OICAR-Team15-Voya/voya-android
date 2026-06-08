@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">VoyaAndroid</string>
+    <string name="reservation_list_title">My reservations</string>
+    <string name="new_reservation">New Reservation</string>
+    <string name="no_reservations">No reservations yet.</string>
+    <string name="create_reservation_coming_soon">Create reservation screen will be implemented next.</string>
+    <string name="reservation_details_coming_soon">Reservation #%1$d details screen will be implemented next.</string>
+    <string name="session_expired">Session expired. Please login again.</string>
+    <string name="generic_error_code">Error: %1$d</string>
+    <string name="network_error">Network error: %1$s</string>
+    <string name="reservation_item_primary">#%1$d - %2$s - %3$s</string>
+    <string name="reservation_item_secondary">%1$s | %2$s -> %3$s</string>
+</resources>
