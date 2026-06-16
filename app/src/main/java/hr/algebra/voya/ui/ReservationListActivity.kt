@@ -18,6 +18,7 @@ import hr.algebra.voya.api.ApiClient
 import hr.algebra.voya.api.TokenManager
 import hr.algebra.voya.databinding.ActivityReservationListBinding
 import hr.algebra.voya.model.ReservationDto
+import hr.algebra.voya.util.LogoutMenuHelper
 import kotlinx.coroutines.launch
 
 class ReservationListActivity : AppCompatActivity() {
@@ -35,10 +36,6 @@ class ReservationListActivity : AppCompatActivity() {
         adapter = ReservationListAdapter(reservations)
         binding.listReservations.adapter = adapter
 
-        binding.buttonNewReservation.setOnClickListener {
-            startActivity(Intent(this, CreateReservationActivity::class.java))
-        }
-
         binding.listReservations.setOnItemClickListener { _, _, position, _ ->
             val reservation = reservations[position]
             val intent = Intent(this, ReservationDetailActivity::class.java)
@@ -53,8 +50,21 @@ class ReservationListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val logoutMenuId = LogoutMenuHelper.resolveLogoutMenuId(resources::getIdentifier, packageName)
+        if (LogoutMenuHelper.isLogoutSelection(item.itemId, logoutMenuId)) {
+            TokenManager.clear(this)
+            Toast.makeText(this, "Logged out.", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finishAffinity()
+            return true
+        }
+
         return when (item.itemId) {
             R.id.menu_reservations -> true
+            R.id.menu_create_reservation -> {
+                startActivity(Intent(this, CreateReservationActivity::class.java))
+                true
+            }
             R.id.menu_profile -> {
                 startActivity(Intent(this, ProfileActivity::class.java))
                 true

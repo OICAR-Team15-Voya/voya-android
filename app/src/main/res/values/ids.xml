@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_reservations" type="id" />
+    <item name="menu_create_reservation" type="id" />
+    <item name="menu_profile" type="id" />
+    <item name="menu_logout" type="id" />
+</resources>
+
