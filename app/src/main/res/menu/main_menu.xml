@@ -2,12 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_reservations"
+        android:id="@id/menu_reservations"
         android:title="Reservations" />
 
     <item
-        android:id="@+id/menu_profile"
+        android:id="@id/menu_create_reservation"
+        android:title="New Reservation" />
+
+    <item
+        android:id="@id/menu_profile"
         android:title="Profile" />
+
+    <item
+        android:id="@id/menu_logout"
+        android:title="Logout" />
 
 </menu>
 

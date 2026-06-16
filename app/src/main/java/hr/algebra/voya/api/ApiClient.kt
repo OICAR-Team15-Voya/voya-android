@@ -34,10 +34,12 @@ object ApiClient {
     private fun createOkHttpClient(context: Context): OkHttpClient {
         val authInterceptor = Interceptor { chain ->
             val token = TokenManager.getToken(context)
-            val request = if (token.isNullOrBlank()) {
-                chain.request()
+            val originalRequest = chain.request()
+            val shouldAttachAuthHeader = shouldAttachAuthHeader(originalRequest.url.encodedPath)
+            val request = if (token.isNullOrBlank() || !shouldAttachAuthHeader) {
+                originalRequest
             } else {
-                chain.request().newBuilder()
+                originalRequest.newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .build()
             }
@@ -55,5 +57,9 @@ object ApiClient {
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
+    }
+
+    internal fun shouldAttachAuthHeader(encodedPath: String): Boolean {
+        return !encodedPath.startsWith("/voya/api/auth/")
     }
 }

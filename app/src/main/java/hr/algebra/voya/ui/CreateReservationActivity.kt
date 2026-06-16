@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -19,11 +18,9 @@ import hr.algebra.voya.api.ApiClient
 import hr.algebra.voya.api.TokenManager
 import hr.algebra.voya.model.ReservationRequest
 import hr.algebra.voya.model.VehicleCategoryDto
+import hr.algebra.voya.util.LogoutMenuHelper
+import hr.algebra.voya.util.ReservationDateTimeParser
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class CreateReservationActivity : AppCompatActivity() {
 
@@ -85,11 +82,21 @@ class CreateReservationActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val logoutMenuId = LogoutMenuHelper.resolveLogoutMenuId(resources::getIdentifier, packageName)
+        if (LogoutMenuHelper.isLogoutSelection(item.itemId, logoutMenuId)) {
+            TokenManager.clear(this)
+            Toast.makeText(this, "Logged out.", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finishAffinity()
+            return true
+        }
+
         return when (item.itemId) {
             R.id.menu_reservations -> {
                 startActivity(Intent(this, ReservationListActivity::class.java))
                 true
             }
+            R.id.menu_create_reservation -> true
             R.id.menu_profile -> {
                 startActivity(Intent(this, ProfileActivity::class.java))
                 true
@@ -230,13 +237,7 @@ class CreateReservationActivity : AppCompatActivity() {
     }
 
     private fun parseToIsoDateTime(dateInput: String, timeInput: String): String? {
-        return try {
-            val date = LocalDate.parse(dateInput, DateTimeFormatter.ISO_LOCAL_DATE)
-            val time = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("H:mm"))
-            LocalDateTime.of(date, time).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
-        } catch (_: Exception) {
-            null
-        }
+        return ReservationDateTimeParser.toIso(dateInput = dateInput, timeInput = timeInput)
     }
 
     private fun setLoading(isLoading: Boolean) {

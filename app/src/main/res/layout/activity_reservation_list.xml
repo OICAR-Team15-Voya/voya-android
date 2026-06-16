@@ -12,18 +12,10 @@
         android:text="My reservations"
         android:textAppearance="?attr/textAppearanceHeadlineMedium"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/buttonNewReservation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonNewReservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Reservation"
-        app:layout_constraintBaseline_toBaselineOf="@id/textReservationListTitle"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressReservations"
